@@ -1,5 +1,4 @@
-```javascript
-const CACHE_NAME = "fishing-v5";
+const CACHE_NAME = "fishing-v6";
 
 const ARCHIVOS = [
     "./",
@@ -41,4 +40,3 @@ self.addEventListener("fetch", event => {
             .catch(() => caches.match(event.request))
     );
 });
-```
