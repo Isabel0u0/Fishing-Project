@@ -1,3 +1,4 @@
+```javascript
 const CACHE_NAME = "fishing-v5";
 
 const ARCHIVOS = [
@@ -10,10 +11,12 @@ const ARCHIVOS = [
 ];
 
 self.addEventListener("install", event => {
+    self.skipWaiting();
+
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(ARCHIVOS))
-            .then(() => self.skipWaiting())
+        caches.open(CACHE_NAME).then(cache => {
+            return cache.addAll(ARCHIVOS);
+        })
     );
 });
 
@@ -34,6 +37,8 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
     event.respondWith(
         fetch(event.request)
+            .then(response => response)
             .catch(() => caches.match(event.request))
     );
 });
+```
