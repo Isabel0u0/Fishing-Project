@@ -1,6 +1,6 @@
 {
-    "name": "PhishGuard",
-    "short_name": "PhishGuard",
+    "name": "Fishing",
+    "short_name": "Fishing",
     "description": "Detector de posibles señales de phishing mediante imágenes.",
     "start_url": "./index.html",
     "scope": "./",
