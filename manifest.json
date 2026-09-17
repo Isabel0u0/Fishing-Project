@@ -2,9 +2,9 @@
     "name": "Fishing",
     "short_name": "Fishing",
     "description": "Detector de posibles señales de phishing mediante imágenes.",
-    "start_url": "./index.html",
+    "start_url": "./",
     "scope": "./",
-    "id": "./"
+    "id": "./",
     "display": "standalone",
     "background_color": "#eef7f8",
     "theme_color": "#087f8c",
