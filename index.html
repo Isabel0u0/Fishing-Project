@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 
@@ -6,18 +5,15 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color"
-          content="#087f8c">
+    <meta name="theme-color" content="#087f8c">
 
     <title>PhishGuard</title>
 
     <link rel="stylesheet" href="styles.css">
 
-    <link rel="manifest"
-          href="manifest.json">
+    <link rel="manifest" href="manifest.json">
 
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
@@ -56,25 +52,17 @@
                 <div class="upload-icon">📷</div>
 
 
-                <label for="imageInput"
-                       class="upload-label">
+                <label for="imageInput" class="upload-label">
 
                     Seleccionar imagen
 
                 </label>
 
 
-                <input
-                    type="file"
-                    id="imageInput"
-                    accept="image/*"
-                >
+                <input type="file" id="imageInput" accept="image/*">
 
 
-                <img
-                    id="preview"
-                    alt="Vista previa"
-                >
+                <img id="preview" alt="Vista previa">
 
 
                 <button
@@ -94,37 +82,25 @@
 
 
 
-        <section
-            class="card result"
-            id="result"
-        >
+        <section class="card result" id="result">
 
             <h2>Resultado del análisis</h2>
 
 
-            <div
-                id="fish"
-                class="fish"
-            >
+            <div id="fish" class="fish">
 
                 🐟
 
             </div>
 
 
-            <div
-                id="risk"
-                class="risk"
-            ></div>
+            <div id="risk" class="risk"></div>
 
 
             <p id="message"></p>
 
 
-            <div
-                class="warning"
-                id="signalsBox"
-            ></div>
+            <div class="warning" id="signalsBox"></div>
 
         </section>
 
@@ -335,7 +311,6 @@ function analizarTexto(texto) {
 
 
     let señales = [];
-
 
 
 // ================================
@@ -1184,7 +1159,7 @@ if (
 
 </script>
 
+
 </body>
 
 </html>
-```
