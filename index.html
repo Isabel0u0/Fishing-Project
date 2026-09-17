@@ -1,121 +1,123 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#087f8c">
+<meta name="theme-color" content="#087f8c">
 
-    <title>PhishGuard</title>
+<title>Fishing</title>
 
-    <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css">
 
-    <link rel="manifest" href="manifest.json">
+<link rel="manifest" href="manifest.json">
 
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+```
 
 </head>
-
 
 <body>
 
 <div class="app">
 
-    <header>
+```
+<header>
 
-        <div class="logo">🐟</div>
+    <div class="logo">🐟</div>
 
-        <h1>PhishGuard</h1>
+    <h1>Fishing</h1>
 
-        <p>Detector de posibles mensajes de phishing</p>
+    <p>Detector de posibles mensajes de phishing</p>
 
-    </header>
-
-
-    <main>
-
-        <section class="card">
-
-            <h2>🔎 Analiza un mensaje</h2>
-
-            <p>
-                Sube una captura de pantalla de un correo o mensaje
-                sospechoso y PhishGuard buscará señales comunes de phishing.
-            </p>
+</header>
 
 
-            <div class="upload">
+<main>
 
-                <div class="upload-icon">📷</div>
+    <section class="card">
 
+        <h2>🔎 Analiza un mensaje</h2>
 
-                <label for="imageInput" class="upload-label">
-
-                    Seleccionar imagen
-
-                </label>
-
-
-                <input type="file" id="imageInput" accept="image/*">
+        <p>
+            Sube una captura de pantalla de un correo o mensaje
+            sospechoso y Fishing buscará señales comunes de phishing.
+        </p>
 
 
-                <img id="preview" alt="Vista previa">
+        <div class="upload">
+
+            <div class="upload-icon">📷</div>
 
 
-                <button
-                    class="analyze-btn"
-                    id="analyzeBtn"
-                    onclick="analyzeImage()"
-                    style="display:none;"
-                >
+            <label for="imageInput" class="upload-label">
 
-                    🔍 Analizar mensaje
+                Seleccionar imagen
 
-                </button>
-
-            </div>
-
-        </section>
+            </label>
 
 
-
-        <section class="card result" id="result">
-
-            <h2>Resultado del análisis</h2>
+            <input type="file" id="imageInput" accept="image/*">
 
 
-            <div id="fish" class="fish">
-
-                🐟
-
-            </div>
+            <img id="preview" alt="Vista previa">
 
 
-            <div id="risk" class="risk"></div>
+            <button
+                class="analyze-btn"
+                id="analyzeBtn"
+                onclick="analyzeImage()"
+                style="display:none;"
+            >
+
+                🔍 Analizar mensaje
+
+            </button>
+
+        </div>
+
+    </section>
 
 
-            <p id="message"></p>
+
+    <section class="card result" id="result">
+
+        <h2>Resultado del análisis</h2>
 
 
-            <div class="warning" id="signalsBox"></div>
+        <div id="fish" class="fish">
 
-        </section>
+            🐟
 
-    </main>
+        </div>
 
 
-    <footer>
+        <div id="risk" class="risk"></div>
 
-        PhishGuard · Proyecto STEAM de ciberseguridad
 
-    </footer>
+        <p id="message"></p>
+
+
+        <div class="warning" id="signalsBox"></div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    Fishing · Proyecto STEAM de ciberseguridad
+
+</footer>
+```
 
 </div>
-
-
 
 <script>
 
@@ -202,7 +204,7 @@ async function analyzeImage() {
 
 
     message.textContent =
-        "PhishGuard está leyendo el texto de la imagen...";
+        "Fishing está leyendo el texto de la imagen...";
 
 
     signalsBox.innerHTML =
@@ -1135,7 +1137,7 @@ if (
                 function() {
 
                     console.log(
-                        "PhishGuard está listo para funcionar como PWA."
+                        "Fishing está listo para funcionar como PWA."
                     );
 
                 }
@@ -1158,7 +1160,6 @@ if (
 }
 
 </script>
-
 
 </body>
 
