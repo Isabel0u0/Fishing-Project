@@ -1,0 +1,1190 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#087f8c">
+
+    <title>PhishGuard</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="manifest"
+          href="manifest.json">
+
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <header>
+
+        <div class="logo">🐟</div>
+
+        <h1>PhishGuard</h1>
+
+        <p>Detector de posibles mensajes de phishing</p>
+
+    </header>
+
+
+    <main>
+
+        <section class="card">
+
+            <h2>🔎 Analiza un mensaje</h2>
+
+            <p>
+                Sube una captura de pantalla de un correo o mensaje
+                sospechoso y PhishGuard buscará señales comunes de phishing.
+            </p>
+
+
+            <div class="upload">
+
+                <div class="upload-icon">📷</div>
+
+
+                <label for="imageInput"
+                       class="upload-label">
+
+                    Seleccionar imagen
+
+                </label>
+
+
+                <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                >
+
+
+                <img
+                    id="preview"
+                    alt="Vista previa"
+                >
+
+
+                <button
+                    class="analyze-btn"
+                    id="analyzeBtn"
+                    onclick="analyzeImage()"
+                    style="display:none;"
+                >
+
+                    🔍 Analizar mensaje
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <section
+            class="card result"
+            id="result"
+        >
+
+            <h2>Resultado del análisis</h2>
+
+
+            <div
+                id="fish"
+                class="fish"
+            >
+
+                🐟
+
+            </div>
+
+
+            <div
+                id="risk"
+                class="risk"
+            ></div>
+
+
+            <p id="message"></p>
+
+
+            <div
+                class="warning"
+                id="signalsBox"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        PhishGuard · Proyecto STEAM de ciberseguridad
+
+    </footer>
+
+</div>
+
+
+
+<script>
+
+let selectedImage = null;
+
+
+// ================================
+// SELECCIONAR IMAGEN
+// ================================
+
+document
+.getElementById("imageInput")
+.addEventListener("change", function(event) {
+
+    selectedImage = event.target.files[0];
+
+    if (!selectedImage) {
+        return;
+    }
+
+    const preview =
+        document.getElementById("preview");
+
+    const analyzeBtn =
+        document.getElementById("analyzeBtn");
+
+
+    preview.src =
+        URL.createObjectURL(selectedImage);
+
+    preview.style.display = "block";
+
+    analyzeBtn.style.display = "block";
+
+});
+
+
+
+// ================================
+// ANALIZAR IMAGEN
+// ================================
+
+async function analyzeImage() {
+
+    if (!selectedImage) {
+
+        alert("Primero selecciona una imagen.");
+
+        return;
+    }
+
+
+    const result =
+        document.getElementById("result");
+
+    const fish =
+        document.getElementById("fish");
+
+    const risk =
+        document.getElementById("risk");
+
+    const message =
+        document.getElementById("message");
+
+    const signalsBox =
+        document.getElementById("signalsBox");
+
+
+    result.style.display = "block";
+
+
+    risk.className =
+        "risk medium";
+
+    risk.textContent =
+        "🔄 Analizando...";
+
+
+    fish.className =
+        "fish fish-medium";
+
+    fish.textContent =
+        "🐟";
+
+
+    message.textContent =
+        "PhishGuard está leyendo el texto de la imagen...";
+
+
+    signalsBox.innerHTML =
+        "⏳ Analizando con reconocimiento de texto...";
+
+
+    try {
+
+        const resultado =
+            await Tesseract.recognize(
+
+                selectedImage,
+
+                "spa",
+
+                {
+
+                    logger: function(info) {
+
+                        if (
+                            info.status ===
+                            "recognizing text"
+                        ) {
+
+                            const porcentaje =
+                                Math.round(
+                                    info.progress * 100
+                                );
+
+
+                            message.textContent =
+                                "Reconociendo texto... "
+                                + porcentaje
+                                + "%";
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+
+        const texto =
+            resultado.data.text;
+
+
+        console.log(
+            "Texto reconocido:"
+        );
+
+        console.log(texto);
+
+
+        analizarTexto(texto);
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        risk.className =
+            "risk high";
+
+        risk.textContent =
+            "⚠️ Error";
+
+
+        fish.className =
+            "fish fish-high";
+
+        fish.textContent =
+            "🐟";
+
+
+        message.textContent =
+            "No fue posible analizar la imagen.";
+
+
+        signalsBox.innerHTML =
+            "Intenta nuevamente con una captura más clara.";
+
+    }
+
+}
+
+
+
+// ================================
+// DETECTOR DE PHISHING
+// ================================
+
+function analizarTexto(texto) {
+
+
+    const textoNormalizado =
+        texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        );
+
+
+    let señales = [];
+
+
+
+// ================================
+// CORREO ELECTRÓNICO
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "correo electronico"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "correo"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "email"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "e-mail"
+        )
+
+    ) {
+
+        señales.push(
+            "📧 Solicita o menciona una dirección de correo electrónico."
+        );
+
+    }
+
+
+
+// ================================
+// TELÉFONO
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "numero de telefono"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "telefono"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "celular"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "movil"
+        )
+
+    ) {
+
+        señales.push(
+            "📱 Solicita un número de teléfono o celular."
+        );
+
+    }
+
+
+
+// ================================
+// DIRECCIÓN
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "direccion"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "domicilio"
+        )
+
+    ) {
+
+        señales.push(
+            "🏠 Puede estar solicitando una dirección o domicilio."
+        );
+
+    }
+
+
+
+// ================================
+// INFORMACIÓN PERSONAL
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "nombre completo"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "datos personales"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "informacion personal"
+        )
+
+    ) {
+
+        señales.push(
+            "👤 Solicita información personal."
+        );
+
+    }
+
+
+
+// ================================
+// CONTRASEÑAS
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "contrasena"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "password"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "clave"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "credencial"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "usuario"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "nombre de usuario"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "confirmar contrasena"
+        )
+
+    ) {
+
+        señales.push(
+            "🔑 Solicita o menciona contraseñas o credenciales."
+        );
+
+    }
+
+
+
+// ================================
+// CÓDIGOS
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "codigo"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "codigo de seguridad"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "codigo de verificacion"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "verificacion"
+        )
+
+    ) {
+
+        señales.push(
+            "🔢 Puede estar solicitando un código de verificación."
+        );
+
+    }
+
+
+
+// ================================
+// INFORMACIÓN BANCARIA
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "tarjeta"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "banco"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "datos bancarios"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "cuenta bancaria"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "numero de tarjeta"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "numero de cuenta"
+        )
+
+    ) {
+
+        señales.push(
+            "💳 Solicita o menciona información bancaria."
+        );
+
+    }
+
+
+
+// ================================
+// URGENCIA
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "urgente"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "inmediatamente"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "de inmediato"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "ultimo aviso"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "accion requerida"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "atencion"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "ahora"
+        )
+
+    ) {
+
+        señales.push(
+            "🚨 Utiliza lenguaje de urgencia o presión."
+        );
+
+    }
+
+
+
+// ================================
+// ENLACES
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "http://"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "https://"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "www."
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            ".com/"
+        )
+
+    ) {
+
+        señales.push(
+            "🔗 Contiene un posible enlace."
+        );
+
+    }
+
+
+
+// ================================
+// CUENTA BLOQUEADA
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "cuenta bloqueada"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "cuenta suspendida"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "cuenta sera bloqueada"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "cuenta sera suspendida"
+        )
+
+    ) {
+
+        señales.push(
+            "🔒 Menciona una cuenta bloqueada o suspendida."
+        );
+
+    }
+
+
+
+// ================================
+// VERIFICACIÓN DE CUENTA
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "verifica tu cuenta"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "verificar tu cuenta"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "actualiza tus datos"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "confirma tus datos"
+        )
+
+    ) {
+
+        señales.push(
+            "📝 Solicita verificar o actualizar información."
+        );
+
+    }
+
+
+
+// ================================
+// RESPONDER
+// ================================
+
+    if (
+
+        textoNormalizado.includes(
+            "responda a este mensaje"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "responde a este mensaje"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "responda a este correo"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "responde a este correo"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "envia tus datos"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "envie sus datos"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "responde"
+        )
+
+    ) {
+
+        señales.push(
+            "✉️ Pide responder al mensaje o enviar información."
+        );
+
+    }
+
+
+
+// ================================
+// VARIOS DATOS PERSONALES
+// ================================
+
+    let datosPersonales = 0;
+
+
+    if (
+
+        textoNormalizado.includes(
+            "correo electronico"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "correo"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "email"
+        )
+
+    ) {
+
+        datosPersonales++;
+
+    }
+
+
+    if (
+
+        textoNormalizado.includes(
+            "numero de telefono"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "telefono"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "celular"
+        )
+
+    ) {
+
+        datosPersonales++;
+
+    }
+
+
+    if (
+
+        textoNormalizado.includes(
+            "direccion"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "domicilio"
+        )
+
+    ) {
+
+        datosPersonales++;
+
+    }
+
+
+    if (
+
+        textoNormalizado.includes(
+            "nombre completo"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "datos personales"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "informacion personal"
+        )
+
+    ) {
+
+        datosPersonales++;
+
+    }
+
+
+    if (
+
+        textoNormalizado.includes(
+            "tarjeta"
+        )
+
+        ||
+
+        textoNormalizado.includes(
+            "cuenta bancaria"
+        )
+
+    ) {
+
+        datosPersonales++;
+
+    }
+
+
+    if (
+        datosPersonales >= 2
+    ) {
+
+        señales.push(
+            "⚠️ Solicita varios tipos de información personal."
+        );
+
+    }
+
+
+
+// ================================
+// RESULTADO
+// ================================
+
+    const cantidad =
+        señales.length;
+
+
+    const risk =
+        document.getElementById(
+            "risk"
+        );
+
+
+    const fish =
+        document.getElementById(
+            "fish"
+        );
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    const signalsBox =
+        document.getElementById(
+            "signalsBox"
+        );
+
+
+
+    if (
+        cantidad <= 1
+    ) {
+
+        risk.className =
+            "risk low";
+
+        risk.textContent =
+            "🟢 RIESGO BAJO";
+
+
+        fish.className =
+            "fish fish-low";
+
+        fish.textContent =
+            "🐟";
+
+
+        message.textContent =
+            "Se encontraron pocas señales relacionadas con phishing.";
+
+    }
+
+
+
+    else if (
+        cantidad <= 3
+    ) {
+
+        risk.className =
+            "risk medium";
+
+        risk.textContent =
+            "🟡 RIESGO MEDIO";
+
+
+        fish.className =
+            "fish fish-medium";
+
+        fish.textContent =
+            "🐟 🎣";
+
+
+        message.textContent =
+            "Se encontraron varias señales sospechosas que conviene revisar.";
+
+    }
+
+
+
+    else {
+
+        risk.className =
+            "risk high";
+
+        risk.textContent =
+            "🔴 RIESGO ALTO";
+
+
+        fish.className =
+            "fish fish-high";
+
+        fish.textContent =
+            "🐟 🕸️";
+
+
+        message.textContent =
+            "Se encontraron varias señales asociadas con posibles intentos de phishing.";
+
+    }
+
+
+
+// ================================
+// MOSTRAR SEÑALES
+// ================================
+
+    let html = "";
+
+
+    html +=
+        "<strong>🔎 Señales encontradas: "
+        + cantidad
+        + "</strong>";
+
+
+    if (
+        cantidad === 0
+    ) {
+
+        html +=
+            "<p style='margin-top:10px;'>No se encontraron señales conocidas.</p>";
+
+    }
+
+    else {
+
+        html +=
+            "<ul style='margin-top:12px; padding-left:20px;'>";
+
+
+        señales.forEach(
+            function(señal) {
+
+                html +=
+                    "<li style='margin-bottom:8px;'>"
+                    + señal
+                    + "</li>";
+
+            }
+        );
+
+
+        html +=
+            "</ul>";
+
+    }
+
+
+    html += `
+        <p style="margin-top:15px; font-size:12px;">
+            ⚠️ Resultado orientativo: estas señales no confirman por sí solas
+            que un mensaje sea phishing.
+        </p>
+    `;
+
+
+    signalsBox.innerHTML =
+        html;
+
+}
+
+
+
+// ================================
+// ACTIVAR PWA
+// ================================
+
+if (
+    "serviceWorker" in navigator
+) {
+
+    window.addEventListener(
+        "load",
+        function() {
+
+            navigator.serviceWorker
+            .register("sw.js")
+
+            .then(
+                function() {
+
+                    console.log(
+                        "PhishGuard está listo para funcionar como PWA."
+                    );
+
+                }
+            )
+
+            .catch(
+                function(error) {
+
+                    console.error(
+                        "Error al registrar la PWA:",
+                        error
+                    );
+
+                }
+            );
+
+        }
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>
+```

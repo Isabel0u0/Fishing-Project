@@ -1,0 +1,169 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eef7f8;
+    color: #17323a;
+    min-height: 100vh;
+}
+
+.app {
+    max-width: 480px;
+    margin: auto;
+    min-height: 100vh;
+    background: white;
+}
+
+header {
+    background: #087f8c;
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 48px;
+    margin-bottom: 5px;
+}
+
+header h1 {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+main {
+    padding: 25px 20px;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+    font-size: 21px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    line-height: 1.5;
+    color: #52676d;
+}
+
+.upload {
+    border: 2px dashed #36aeb8;
+    border-radius: 15px;
+    padding: 30px 15px;
+    text-align: center;
+    margin-top: 18px;
+    background: #f3fcfd;
+}
+
+.upload-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.upload-label {
+    display: inline-block;
+    background: #087f8c;
+    color: white;
+    padding: 13px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.upload-label:hover {
+    background: #066b76;
+}
+
+#preview {
+    max-width: 100%;
+    max-height: 280px;
+    margin-top: 18px;
+    border-radius: 12px;
+    display: none;
+}
+
+.analyze-btn {
+    width: 100%;
+    border: none;
+    background: #f4a261;
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.analyze-btn:hover {
+    background: #e88c43;
+}
+
+.result {
+    display: none;
+    text-align: center;
+}
+
+.fish {
+    font-size: 75px;
+    margin: 15px 0;
+}
+
+.risk {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.low {
+    background: #d9f5df;
+    color: #22753a;
+}
+
+.medium {
+    background: #fff0c7;
+    color: #946b00;
+}
+
+.high {
+    background: #ffd9d9;
+    color: #a32626;
+}
+
+.warning {
+    background: #fff5dc;
+    border-left: 5px solid #f4a261;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 18px;
+    text-align: left;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #789096;
+}
