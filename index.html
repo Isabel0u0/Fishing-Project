@@ -10,7 +10,9 @@
     <meta name="description" content="Detector de posibles señales de phishing mediante imágenes.">
 
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="styles.css">
+
+    <!-- v=2 obliga a cargar el CSS actualizado -->
+    <link rel="stylesheet" href="styles.css?v=2">
 
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
@@ -21,13 +23,23 @@
 
     <header>
         <div class="logo">🐟</div>
+
         <h1>Fishing</h1>
-        <p>Detector de posibles mensajes de phishing</p>
+
+        <p>
+            Detector de posibles mensajes de phishing
+        </p>
     </header>
+
 
     <main>
 
+        <!-- =========================
+             SECCIÓN PARA SUBIR IMAGEN
+        ========================== -->
+
         <section class="card">
+
             <h2>🔎 Analiza un mensaje</h2>
 
             <p>
@@ -35,15 +47,25 @@
                 para identificar posibles señales de phishing.
             </p>
 
+
             <div class="upload">
 
-                <div class="upload-icon">📷</div>
+                <div class="upload-icon">
+                    📷
+                </div>
 
-                <p>Selecciona una imagen para analizarla</p>
+                <p>
+                    Selecciona una imagen para analizarla
+                </p>
 
-                <label for="imageInput" class="upload-label">
+
+                <label
+                    for="imageInput"
+                    class="upload-label"
+                >
                     📁 Subir imagen
                 </label>
+
 
                 <input
                     type="file"
@@ -51,9 +73,14 @@
                     accept="image/*"
                 >
 
-                <img id="preview" alt="Vista previa de la imagen">
+
+                <img
+                    id="preview"
+                    alt="Vista previa de la imagen"
+                >
 
             </div>
+
 
             <button
                 id="analyzeBtn"
@@ -63,46 +90,113 @@
                 🔍 Analizar mensaje
             </button>
 
-            <p id="ocrStatus" class="ocr-status"></p>
+
+            <p
+                id="ocrStatus"
+                class="ocr-status"
+            ></p>
 
         </section>
 
 
-        <section id="result" class="card result">
+        <!-- =========================
+             RESULTADO
+        ========================== -->
 
-            <h2 id="resultTitle">Resultado del análisis</h2>
+        <section
+            id="result"
+            class="card result"
+        >
 
-            <!-- ANIMACIÓN -->
-            <div id="animation" class="animation">
+            <h2 id="resultTitle">
+                Resultado del análisis
+            </h2>
 
-                <div id="fish" class="fish">
+
+            <!-- =========================
+                 ANIMACIÓN
+            ========================== -->
+
+            <div
+                id="animation"
+                class="animation"
+            >
+
+                <div
+                    id="fish"
+                    class="fish"
+                >
                     🐟
                 </div>
 
-                <div id="hook" class="danger-object">
+
+                <div
+                    id="hook"
+                    class="danger-object"
+                >
                     🎣
                 </div>
 
-                <div id="net" class="danger-object">
+
+                <div
+                    id="net"
+                    class="danger-object"
+                >
                     🕸️
                 </div>
 
             </div>
 
-            <div id="risk" class="risk"></div>
+
+            <!-- =========================
+                 NIVEL DE RIESGO
+            ========================== -->
+
+            <div
+                id="risk"
+                class="risk"
+            ></div>
+
 
             <p id="message"></p>
 
-            <div id="signalsBox" class="signals-box">
-                <h3>🔍 Señales detectadas</h3>
+
+            <!-- =========================
+                 SEÑALES DETECTADAS
+            ========================== -->
+
+            <div
+                id="signalsBox"
+                class="signals-box"
+            >
+
+                <h3>
+                    🔍 Señales detectadas
+                </h3>
+
+
                 <ul id="signals"></ul>
+
             </div>
 
+
+            <!-- =========================
+                 ADVERTENCIA
+            ========================== -->
+
             <div class="warning">
+
                 <strong>⚠️ Recuerda:</strong>
+
                 Fishing ayuda a identificar posibles señales de phishing,
                 pero ningún análisis garantiza que un mensaje sea seguro.
+
             </div>
+
+
+            <!-- =========================
+                 NUEVO ANÁLISIS
+            ========================== -->
 
             <button
                 id="newAnalysisBtn"
@@ -115,6 +209,7 @@
         </section>
 
     </main>
+
 
     <footer>
         Fishing · Proyecto STEAM de ciberseguridad
@@ -132,9 +227,15 @@ let selectedImage = null;
    SELECCIONAR IMAGEN
 ========================= */
 
-const imageInput = document.getElementById("imageInput");
-const preview = document.getElementById("preview");
-const analyzeBtn = document.getElementById("analyzeBtn");
+const imageInput =
+    document.getElementById("imageInput");
+
+const preview =
+    document.getElementById("preview");
+
+const analyzeBtn =
+    document.getElementById("analyzeBtn");
+
 
 imageInput.addEventListener("change", function () {
 
@@ -144,24 +245,34 @@ imageInput.addEventListener("change", function () {
         return;
     }
 
+
     selectedImage = file;
 
+
     const reader = new FileReader();
+
 
     reader.onload = function (event) {
 
         preview.src = event.target.result;
+
         preview.style.display = "block";
 
         analyzeBtn.style.display = "block";
 
+
         document.getElementById("ocrStatus").textContent =
             "Imagen lista para analizar.";
 
-        document.getElementById("result").style.display = "none";
+
+        document.getElementById("result").style.display =
+            "none";
+
     };
 
+
     reader.readAsDataURL(file);
+
 });
 
 
@@ -169,7 +280,10 @@ imageInput.addEventListener("change", function () {
    BOTÓN ANALIZAR
 ========================= */
 
-analyzeBtn.addEventListener("click", analyzeImage);
+analyzeBtn.addEventListener(
+    "click",
+    analyzeImage
+);
 
 
 /* =========================
@@ -182,58 +296,91 @@ async function analyzeImage() {
         return;
     }
 
-    const status = document.getElementById("ocrStatus");
+
+    const status =
+        document.getElementById("ocrStatus");
+
 
     analyzeBtn.disabled = true;
 
-    status.textContent = "🔄 Fishing está leyendo el mensaje...";
 
-    document.getElementById("result").style.display = "none";
+    status.textContent =
+        "🔄 Fishing está leyendo el mensaje...";
+
+
+    document.getElementById("result").style.display =
+        "none";
+
 
     try {
 
-        const result = await Tesseract.recognize(
-            selectedImage,
-            "spa",
-            {
-                logger: function (info) {
+        const result =
+            await Tesseract.recognize(
+                selectedImage,
+                "spa",
+                {
 
-                    if (info.status === "recognizing text") {
+                    logger: function (info) {
 
-                        const porcentaje =
-                            Math.round(info.progress * 100);
+                        if (
+                            info.status ===
+                            "recognizing text"
+                        ) {
 
-                        status.textContent =
-                            "🔄 Reconociendo texto... " +
-                            porcentaje +
-                            "%";
+                            const porcentaje =
+                                Math.round(
+                                    info.progress * 100
+                                );
+
+
+                            status.textContent =
+                                "🔄 Reconociendo texto... " +
+                                porcentaje +
+                                "%";
+
+                        }
+
                     }
+
                 }
-            }
+            );
+
+
+        const texto =
+            result.data.text;
+
+
+        console.log(
+            "Texto reconocido:",
+            texto
         );
 
-        const texto = result.data.text;
-
-        console.log("Texto reconocido:", texto);
 
         status.textContent =
             "✅ Texto reconocido correctamente.";
 
+
         analizarTexto(texto);
+
 
     } catch (error) {
 
         console.error(error);
 
+
         status.textContent =
             "❌ No se pudo analizar la imagen.";
+
 
         alert(
             "Ocurrió un problema al analizar la imagen. Intenta nuevamente."
         );
+
     }
 
+
     analyzeBtn.disabled = false;
+
 }
 
 
@@ -246,7 +393,11 @@ function limpiarTexto(texto) {
     return texto
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        );
+
 }
 
 
@@ -256,13 +407,18 @@ function limpiarTexto(texto) {
 
 function analizarTexto(texto) {
 
-    const limpio = limpiarTexto(texto);
+    const limpio =
+        limpiarTexto(texto);
+
 
     let puntos = 0;
+
     let señales = [];
 
 
-    /* CORREO */
+    /* =========================
+       CORREO
+    ========================== */
 
     if (
         limpio.includes("@") ||
@@ -271,11 +427,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos++;
-        señales.push("Contiene información relacionada con un correo electrónico.");
+
+        señales.push(
+            "Contiene información relacionada con un correo electrónico."
+        );
+
     }
 
 
-    /* TELÉFONO */
+    /* =========================
+       TELÉFONO
+    ========================== */
 
     if (
         limpio.includes("telefono") ||
@@ -285,11 +447,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos++;
-        señales.push("Solicita o muestra un número telefónico.");
+
+        señales.push(
+            "Solicita o muestra un número telefónico."
+        );
+
     }
 
 
-    /* DIRECCIÓN */
+    /* =========================
+       DIRECCIÓN
+    ========================== */
 
     if (
         limpio.includes("direccion") ||
@@ -299,11 +467,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos++;
-        señales.push("Solicita información de domicilio.");
+
+        señales.push(
+            "Solicita información de domicilio."
+        );
+
     }
 
 
-    /* DATOS PERSONALES */
+    /* =========================
+       DATOS PERSONALES
+    ========================== */
 
     if (
         limpio.includes("datos personales") ||
@@ -314,11 +488,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos += 2;
-        señales.push("Solicita datos personales.");
+
+        señales.push(
+            "Solicita datos personales."
+        );
+
     }
 
 
-    /* CONTRASEÑAS */
+    /* =========================
+       CONTRASEÑAS
+    ========================== */
 
     if (
         limpio.includes("contrasena") ||
@@ -331,11 +511,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos += 2;
-        señales.push("Solicita contraseñas o credenciales.");
+
+        señales.push(
+            "Solicita contraseñas o credenciales."
+        );
+
     }
 
 
-    /* CÓDIGOS */
+    /* =========================
+       CÓDIGOS
+    ========================== */
 
     if (
         limpio.includes("codigo de verificacion") ||
@@ -346,11 +532,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos += 2;
-        señales.push("Solicita un código de verificación o seguridad.");
+
+        señales.push(
+            "Solicita un código de verificación o seguridad."
+        );
+
     }
 
 
-    /* INFORMACIÓN BANCARIA */
+    /* =========================
+       INFORMACIÓN BANCARIA
+    ========================== */
 
     if (
         limpio.includes("tarjeta") ||
@@ -363,11 +555,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos += 2;
-        señales.push("Solicita información bancaria o financiera.");
+
+        señales.push(
+            "Solicita información bancaria o financiera."
+        );
+
     }
 
 
-    /* URGENCIA */
+    /* =========================
+       URGENCIA
+    ========================== */
 
     if (
         limpio.includes("urgente") ||
@@ -380,11 +578,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos += 2;
-        señales.push("Utiliza lenguaje de urgencia.");
+
+        señales.push(
+            "Utiliza lenguaje de urgencia."
+        );
+
     }
 
 
-    /* ENLACES */
+    /* =========================
+       ENLACES
+    ========================== */
 
     if (
         limpio.includes("http://") ||
@@ -396,11 +600,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos += 2;
-        señales.push("Contiene o solicita abrir un enlace.");
+
+        señales.push(
+            "Contiene o solicita abrir un enlace."
+        );
+
     }
 
 
-    /* CUENTA BLOQUEADA */
+    /* =========================
+       CUENTA BLOQUEADA
+    ========================== */
 
     if (
         limpio.includes("cuenta bloqueada") ||
@@ -410,11 +620,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos += 2;
-        señales.push("Utiliza una advertencia sobre una cuenta bloqueada o suspendida.");
+
+        señales.push(
+            "Utiliza una advertencia sobre una cuenta bloqueada o suspendida."
+        );
+
     }
 
 
-    /* VERIFICACIÓN */
+    /* =========================
+       VERIFICACIÓN
+    ========================== */
 
     if (
         limpio.includes("verifica tu cuenta") ||
@@ -425,11 +641,17 @@ function analizarTexto(texto) {
     ) {
 
         puntos += 2;
-        señales.push("Solicita verificar o actualizar información.");
+
+        señales.push(
+            "Solicita verificar o actualizar información."
+        );
+
     }
 
 
-    /* RESPONDER */
+    /* =========================
+       RESPONDER
+    ========================== */
 
     if (
         limpio.includes("responde a este mensaje") ||
@@ -438,46 +660,77 @@ function analizarTexto(texto) {
     ) {
 
         puntos++;
-        señales.push("Solicita responder directamente al mensaje.");
+
+        señales.push(
+            "Solicita responder directamente al mensaje."
+        );
+
     }
 
 
     /* =========================
        NIVEL DE RIESGO
-    ========================= */
+    ========================== */
 
     let nivel;
+
     let clase;
+
     let mensaje;
 
 
     if (puntos <= 1) {
 
-        nivel = "🐟 RIESGO BAJO";
-        clase = "low";
+        nivel =
+            "🐟 RIESGO BAJO";
+
+        clase =
+            "low";
+
 
         mensaje =
             "No se encontraron muchas señales de alerta. Aun así, mantén precaución.";
 
-    } else if (puntos <= 3) {
+    }
 
-        nivel = "🎣 RIESGO MEDIO";
-        clase = "medium";
+
+    else if (puntos <= 3) {
+
+        nivel =
+            "🎣 RIESGO MEDIO";
+
+        clase =
+            "medium";
+
 
         mensaje =
             "Se encontraron algunas señales que podrían ser sospechosas. Ten cuidado.";
 
-    } else {
-
-        nivel = "🕸️ RIESGO ALTO";
-        clase = "high";
-
-        mensaje =
-            "Se encontraron varias señales sospechosas. Evita proporcionar información personal o abrir enlaces.";
     }
 
 
-    mostrarResultado(nivel, clase, mensaje, señales);
+    else {
+
+        nivel =
+            "🕸️ RIESGO ALTO";
+
+        clase =
+            "high";
+
+
+        mensaje =
+            "Se encontraron varias señales sospechosas. Evita proporcionar información personal o abrir enlaces.";
+
+    }
+
+
+    mostrarResultado(
+        nivel,
+        clase,
+        mensaje,
+        señales
+    );
+
 }
 
 
@@ -492,124 +745,237 @@ function mostrarResultado(
     señales
 ) {
 
-    const result = document.getElementById("result");
-    const risk = document.getElementById("risk");
-    const message = document.getElementById("message");
-    const signals = document.getElementById("signals");
-
-    const fish = document.getElementById("fish");
-    const hook = document.getElementById("hook");
-    const net = document.getElementById("net");
+    const result =
+        document.getElementById("result");
 
 
-    result.style.display = "block";
+    const risk =
+        document.getElementById("risk");
 
 
-    /* RIESGO */
-
-    risk.textContent = nivel;
-
-    risk.className = "risk " + clase;
+    const message =
+        document.getElementById("message");
 
 
-    /* MENSAJE */
+    const signals =
+        document.getElementById("signals");
 
-    message.textContent = mensaje;
+
+    const fish =
+        document.getElementById("fish");
 
 
-    /* SEÑALES */
+    const hook =
+        document.getElementById("hook");
+
+
+    const net =
+        document.getElementById("net");
+
+
+    /* =========================
+       MOSTRAR RESULTADO
+    ========================== */
+
+    result.style.display =
+        "block";
+
+
+    /* =========================
+       RIESGO
+    ========================== */
+
+    risk.textContent =
+        nivel;
+
+
+    risk.className =
+        "risk " + clase;
+
+
+    /* =========================
+       MENSAJE
+    ========================== */
+
+    message.textContent =
+        mensaje;
+
+
+    /* =========================
+       SEÑALES
+    ========================== */
 
     signals.innerHTML = "";
 
 
     if (señales.length === 0) {
 
-        const li = document.createElement("li");
+        const li =
+            document.createElement("li");
+
 
         li.textContent =
             "No se detectaron señales específicas de alerta.";
 
+
         signals.appendChild(li);
 
-    } else {
+    }
 
-        señales.forEach(function (señal) {
+    else {
 
-            const li = document.createElement("li");
+        señales.forEach(
+            function (señal) {
 
-            li.textContent = señal;
+                const li =
+                    document.createElement("li");
 
-            signals.appendChild(li);
-        });
+
+                li.textContent =
+                    señal;
+
+
+                signals.appendChild(li);
+
+            }
+        );
+
     }
 
 
     /* =========================
-       ANIMACIONES
-    ========================= */
+       REINICIAR ANIMACIONES
+    ========================== */
 
-    fish.className = "fish";
-    hook.className = "danger-object";
-    net.className = "danger-object";
+    fish.className =
+        "fish";
 
 
-    /* BAJO */
+    hook.className =
+        "danger-object";
+
+
+    net.className =
+        "danger-object";
+
+
+    hook.style.display =
+        "none";
+
+
+    net.style.display =
+        "none";
+
+
+    /* =========================
+       RIESGO BAJO
+    ========================== */
 
     if (clase === "low") {
 
-        fish.textContent = "🐟";
+        fish.textContent =
+            "🐟";
 
-        fish.classList.add("fish-low");
 
-        hook.style.display = "none";
-        net.style.display = "none";
+        fish.classList.add(
+            "fish-low"
+        );
+
+
+        hook.style.display =
+            "none";
+
+
+        net.style.display =
+            "none";
+
     }
 
 
-    /* MEDIO */
+    /* =========================
+       RIESGO MEDIO
+    ========================== */
 
     if (clase === "medium") {
 
-        fish.textContent = "🐟";
+        fish.textContent =
+            "🐟";
 
-        fish.classList.add("fish-medium");
 
-        hook.textContent = "🎣";
+        fish.classList.add(
+            "fish-medium"
+        );
 
-        hook.style.display = "block";
-        net.style.display = "none";
 
-        hook.classList.add("hook-animation");
+        hook.textContent =
+            "🎣";
+
+
+        hook.style.display =
+            "block";
+
+
+        net.style.display =
+            "none";
+
+
+        hook.classList.add(
+            "hook-animation"
+        );
+
     }
 
 
-    /* ALTO */
+    /* =========================
+       RIESGO ALTO
+    ========================== */
 
     if (clase === "high") {
 
-        fish.textContent = "🐟";
+        fish.textContent =
+            "🐟";
 
-        fish.classList.add("fish-high");
 
-        net.textContent = "🕸️";
+        fish.classList.add(
+            "fish-high"
+        );
 
-        net.style.display = "block";
-        hook.style.display = "none";
 
-        net.classList.add("net-animation");
+        net.textContent =
+            "🕸️";
+
+
+        net.style.display =
+            "block";
+
+
+        hook.style.display =
+            "none";
+
+
+        net.classList.add(
+            "net-animation"
+        );
+
     }
 
 
-    /* Llevar al resultado */
+    /* =========================
+       DESPLAZARSE AL RESULTADO
+    ========================== */
 
-    setTimeout(function () {
+    setTimeout(
+        function () {
 
-        result.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+            result.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
 
-    }, 100);
+        },
+        100
+    );
+
 }
 
 
@@ -619,23 +985,43 @@ function mostrarResultado(
 
 function reiniciar() {
 
-    selectedImage = null;
+    selectedImage =
+        null;
 
-    imageInput.value = "";
 
-    preview.src = "";
-    preview.style.display = "none";
+    imageInput.value =
+        "";
 
-    analyzeBtn.style.display = "none";
 
-    document.getElementById("ocrStatus").textContent = "";
+    preview.src =
+        "";
 
-    document.getElementById("result").style.display = "none";
+
+    preview.style.display =
+        "none";
+
+
+    analyzeBtn.style.display =
+        "none";
+
+
+    document.getElementById(
+        "ocrStatus"
+    ).textContent =
+        "";
+
+
+    document.getElementById(
+        "result"
+    ).style.display =
+        "none";
+
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
+
 }
 
 
@@ -645,27 +1031,35 @@ function reiniciar() {
 
 if ("serviceWorker" in navigator) {
 
-    window.addEventListener("load", function () {
+    window.addEventListener(
+        "load",
+        function () {
 
-        navigator.serviceWorker
-            .register("./sw.js")
-            .then(function () {
+            navigator.serviceWorker
+                .register("./sw.js")
+                .then(
+                    function () {
 
-                console.log(
-                    "Fishing está listo para funcionar como PWA."
+                        console.log(
+                            "Fishing está listo para funcionar como PWA."
+                        );
+
+                    }
+                )
+                .catch(
+                    function (error) {
+
+                        console.error(
+                            "Error al registrar la PWA:",
+                            error
+                        );
+
+                    }
                 );
 
-            })
-            .catch(function (error) {
+        }
+    );
 
-                console.error(
-                    "Error al registrar la PWA:",
-                    error
-                );
-
-            });
-
-    });
 }
 
 </script>
