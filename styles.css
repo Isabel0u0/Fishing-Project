@@ -96,10 +96,6 @@ input[type="file"] {
     margin-top: 10px;
 }
 
-.upload-label:hover {
-    background: #066b76;
-}
-
 #preview {
     max-width: 100%;
     max-height: 280px;
@@ -124,10 +120,6 @@ input[type="file"] {
     font-weight: bold;
     cursor: pointer;
     margin-top: 15px;
-}
-
-.analyze-btn:hover {
-    background: #e88c43;
 }
 
 .analyze-btn:disabled {
@@ -166,36 +158,51 @@ input[type="file"] {
 
 
 /* =========================
-   ZONA DE ANIMACIÓN
+   ESCENA DEL MAR
 ========================= */
 
 .animation {
     position: relative;
     width: 100%;
-    height: 150px;
+    height: 180px;
     margin: 15px auto;
     overflow: hidden;
     border-radius: 18px;
+
     background:
+        radial-gradient(circle at 20% 25%, rgba(255,255,255,.35) 0 5px, transparent 6px),
+        radial-gradient(circle at 75% 35%, rgba(255,255,255,.3) 0 4px, transparent 5px),
         linear-gradient(
             180deg,
-            #dff8fa 0%,
-            #bcebef 55%,
-            #a4dfe5 100%
+            #159eb0 0%,
+            #087f9c 55%,
+            #075c78 100%
         );
 }
 
 
-/* Burbujas decorativas */
+/* Burbujas */
 
 .animation::before {
-    content: "·  ·     °       ·";
+    content: "°   ·       °      ·    °";
     position: absolute;
-    top: 20px;
-    left: 25px;
-    font-size: 25px;
-    color: rgba(255, 255, 255, 0.9);
-    letter-spacing: 18px;
+    top: 15px;
+    left: 15px;
+    color: rgba(255,255,255,.55);
+    font-size: 22px;
+    letter-spacing: 8px;
+}
+
+
+/* Plantas del fondo */
+
+.animation::after {
+    content: "🌿     🌿        🌿";
+    position: absolute;
+    bottom: -5px;
+    left: 5px;
+    font-size: 42px;
+    opacity: .55;
 }
 
 
@@ -206,47 +213,46 @@ input[type="file"] {
 .fish {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 55%;
+
     transform: translate(-50%, -50%);
-    font-size: 75px;
+
+    font-size: 72px;
     line-height: 1;
+
     z-index: 5;
-    display: block;
 }
 
 
 /* =========================
    RIESGO BAJO
-   PEZ NADA TRANQUILO
 ========================= */
 
 .fish-low {
-    animation: swim 2.5s ease-in-out infinite;
+    animation: swimCalm 3.5s ease-in-out infinite;
 }
 
 
 /* =========================
    RIESGO MEDIO
-   PEZ ESQUIVA EL ANZUELO
 ========================= */
 
 .fish-medium {
-    animation: dodgeFish 1.2s ease-in-out infinite;
+    animation: dodgeHook 3.2s ease-in-out infinite;
 }
 
 
 /* =========================
    RIESGO ALTO
-   PEZ INTENTA ESCAPAR
 ========================= */
 
 .fish-high {
-    animation: escapeFish 0.6s ease-in-out infinite;
+    animation: escapeFish 0.8s ease-in-out infinite;
 }
 
 
 /* =========================
-   OBJETOS DE PELIGRO
+   ANZUELO
 ========================= */
 
 .danger-object {
@@ -255,123 +261,228 @@ input[type="file"] {
     z-index: 10;
 }
 
-
-/* ANZUELO */
-
 .hook-animation {
-    top: 15px;
-    right: -70px;
-    font-size: 58px;
     display: block;
-    animation: hookMove 1.8s ease-in-out infinite;
+
+    top: -5px;
+    right: -75px;
+
+    font-size: 58px;
+
+    animation: hookApproach 3.2s ease-in-out infinite;
 }
 
 
-/* RED */
+/* =========================
+   RED
+========================= */
 
 .net-animation {
-    top: -80px;
+    top: -90px;
     right: 50%;
+
     font-size: 100px;
+
     display: block;
+
     animation: netFall 2s ease-in-out infinite;
 }
 
 
 /* =========================
-   ANIMACIONES CSS
+   PEZ NADA TRANQUILO
 ========================= */
 
-
-/* PEZ TRANQUILO */
-
-@keyframes swim {
+@keyframes swimCalm {
 
     0% {
-        transform: translate(-50%, -50%) translateX(-35px);
+        transform:
+            translate(-50%, -50%)
+            translateX(-25px)
+            rotate(-2deg);
     }
 
     50% {
-        transform: translate(-50%, -50%) translateX(35px);
+        transform:
+            translate(-50%, -50%)
+            translateX(25px)
+            rotate(2deg);
     }
 
     100% {
-        transform: translate(-50%, -50%) translateX(-35px);
+        transform:
+            translate(-50%, -50%)
+            translateX(-25px)
+            rotate(-2deg);
     }
 }
 
 
-/* PEZ ESQUIVANDO */
+/* =========================
+   PEZ ESQUIVA EL ANZUELO
+========================= */
 
-@keyframes dodgeFish {
+@keyframes dodgeHook {
+
+    /* El pez nada normalmente */
 
     0% {
-        transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
+        transform:
+            translate(-50%, -50%)
+            translate(0, 0)
+            rotate(0deg);
     }
 
-    25% {
-        transform: translate(-50%, -50%) translate(-25px, 20px) rotate(-6deg);
+    /* El anzuelo comienza a entrar */
+
+    20% {
+        transform:
+            translate(-50%, -50%)
+            translate(5px, 0)
+            rotate(0deg);
     }
 
-    50% {
-        transform: translate(-50%, -50%) translate(25px, -18px) rotate(6deg);
+    /* El pez se da cuenta y se aleja */
+
+    38% {
+        transform:
+            translate(-50%, -50%)
+            translate(-55px, 18px)
+            rotate(-8deg);
     }
 
-    75% {
-        transform: translate(-50%, -50%) translate(-20px, 15px) rotate(-5deg);
+    /* Esquiva completamente */
+
+    52% {
+        transform:
+            translate(-50%, -50%)
+            translate(-75px, 5px)
+            rotate(-12deg);
     }
+
+    /* Regresa */
+
+    70% {
+        transform:
+            translate(-50%, -50%)
+            translate(-25px, -5px)
+            rotate(-4deg);
+    }
+
+    /* Vuelve a nadar */
 
     100% {
-        transform: translate(-50%, -50%) translate(0, 0) rotate(0deg);
+        transform:
+            translate(-50%, -50%)
+            translate(0, 0)
+            rotate(0deg);
     }
 }
 
 
-/* PEZ ESCAPANDO */
+/* =========================
+   ANZUELO ACERCÁNDOSE
+========================= */
+
+@keyframes hookApproach {
+
+    /* Fuera de pantalla */
+
+    0% {
+        right: -80px;
+        top: -10px;
+        transform: rotate(15deg);
+        opacity: 0;
+    }
+
+    /* Entra */
+
+    15% {
+        right: 5px;
+        top: 5px;
+        transform: rotate(5deg);
+        opacity: 1;
+    }
+
+    /* Se acerca al pez */
+
+    32% {
+        right: 45px;
+        top: 25px;
+        transform: rotate(-5deg);
+        opacity: 1;
+    }
+
+    /* Momento peligroso */
+
+    48% {
+        right: 70px;
+        top: 35px;
+        transform: rotate(-10deg);
+        opacity: 1;
+    }
+
+    /* Se aleja */
+
+    65% {
+        right: 25px;
+        top: 10px;
+        transform: rotate(5deg);
+        opacity: 1;
+    }
+
+    /* Sale */
+
+    82% {
+        right: -30px;
+        top: -5px;
+        transform: rotate(15deg);
+        opacity: .7;
+    }
+
+    /* Reinicia */
+
+    100% {
+        right: -80px;
+        top: -10px;
+        transform: rotate(15deg);
+        opacity: 0;
+    }
+}
+
+
+/* =========================
+   PEZ EN RIESGO ALTO
+========================= */
 
 @keyframes escapeFish {
 
     0% {
-        transform: translate(-50%, -50%) translateX(-5px) rotate(-4deg);
+        transform:
+            translate(-50%, -50%)
+            translateX(-10px)
+            rotate(-5deg);
     }
 
     50% {
-        transform: translate(-50%, -50%) translateX(12px) rotate(5deg);
+        transform:
+            translate(-50%, -50%)
+            translateX(35px)
+            rotate(8deg);
     }
 
     100% {
-        transform: translate(-50%, -50%) translateX(-5px) rotate(-4deg);
+        transform:
+            translate(-50%, -50%)
+            translateX(-10px)
+            rotate(-5deg);
     }
 }
 
 
-/* ANZUELO ACERCÁNDOSE */
-
-@keyframes hookMove {
-
-    0% {
-        right: -70px;
-        transform: rotate(25deg);
-    }
-
-    45% {
-        right: 45px;
-        transform: rotate(-5deg);
-    }
-
-    65% {
-        right: 75px;
-        transform: rotate(-15deg);
-    }
-
-    100% {
-        right: -70px;
-        transform: rotate(25deg);
-    }
-}
-
-
-/* RED CAYENDO */
+/* =========================
+   RED CAYENDO
+========================= */
 
 @keyframes netFall {
 
@@ -381,7 +492,7 @@ input[type="file"] {
         transform: translateX(50%) rotate(-8deg);
     }
 
-    30% {
+    25% {
         opacity: 1;
     }
 
@@ -501,11 +612,11 @@ footer {
     }
 
     .animation {
-        height: 145px;
+        height: 165px;
     }
 
     .fish {
-        font-size: 68px;
+        font-size: 65px;
     }
 
     .hook-animation {
@@ -513,6 +624,6 @@ footer {
     }
 
     .net-animation {
-        font-size: 90px;
+        font-size: 85px;
     }
 }
